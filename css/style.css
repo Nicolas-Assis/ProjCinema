@@ -1,0 +1,26 @@
+.hidden { display: none; }
+.navbar-brand { font-weight: bold; }
+.table-responsive { max-height: 400px; overflow-y: auto; }
+
+.hero-section {
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+    min-height: 60vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.card-menu { transition: transform 0.3s ease, box-shadow 0.3s ease; }
+.card-menu:hover { transform: translateY(-10px); box-shadow: 0 15px 30px rgba(0,0,0,0.2); }
+.icon-large { font-size: 3rem; }
+
+.card-sala { transition: transform 0.2s; }
+.card-sala:hover { transform: scale(1.02); }
+
+.card-sessao { transition: transform 0.2s, box-shadow 0.2s; border: none; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+.card-sessao:hover { transform: translateY(-5px); box-shadow: 0 5px 20px rgba(0,0,0,0.15); }
+.badge-idioma { font-size: 0.75rem; }
+.preco-grande { font-size: 1.5rem; font-weight: bold; }
+.hero-programacao { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 40px 0; }
+
+.ingresso-card { border-left: 5px solid #dc3545; }

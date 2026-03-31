@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Venda de Ingressos - CineControl</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="index.html"><i class="bi bi-film"></i> CineControl</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-label="Menu">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="index.html">Inicio</a></li>
+                    <li class="nav-item"><a class="nav-link" href="cadastro-filmes.html">Filmes</a></li>
+                    <li class="nav-item"><a class="nav-link" href="cadastro-salas.html">Salas</a></li>
+                    <li class="nav-item"><a class="nav-link" href="cadastro-sessoes.html">Sessoes</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="venda-ingressos.html">Ingressos</a></li>
+                    <li class="nav-item"><a class="nav-link" href="sessoes.html">Programacao</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container py-5">
+        <div class="row">
+            <div class="col-lg-5 mb-4">
+                <div class="card shadow">
+                    <div class="card-header bg-danger text-white">
+                        <h5 class="mb-0"><i class="bi bi-ticket-perforated"></i> Venda de Ingressos</h5>
+                    </div>
+                    <div class="card-body">
+                        <form id="formVenda">
+                            <div class="mb-3">
+                                <label for="sessao" class="form-label">Sessao *</label>
+                                <select class="form-select" id="sessao" required>
+                                    <option value="">Selecione uma sessao...</option>
+                                </select>
+                            </div>
+                            <div id="detalhesSessao" class="alert alert-info mb-3 hidden">
+                                <strong><i class="bi bi-info-circle"></i> Detalhes:</strong>
+                                <div id="infoSessao" class="mt-2"></div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="nomeCliente" class="form-label">Nome *</label>
+                                <input type="text" class="form-control" id="nomeCliente" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="cpf" class="form-label">CPF *</label>
+                                <input type="text" class="form-control" id="cpf" required maxlength="14">
+                            </div>
+                            <div class="mb-3">
+                                <label for="assento" class="form-label">Assento *</label>
+                                <input type="text" class="form-control" id="assento" required placeholder="Ex: A10">
+                            </div>
+                            <div class="mb-3">
+                                <label for="tipoPagamento" class="form-label">Pagamento *</label>
+                                <select class="form-select" id="tipoPagamento" required>
+                                    <option value="">Selecione...</option>
+                                    <option value="Cartao">Cartao</option>
+                                    <option value="Pix">Pix</option>
+                                    <option value="Dinheiro">Dinheiro</option>
+                                </select>
+                            </div>
+                            <div class="d-grid gap-2">
+                                <button type="submit" class="btn btn-danger"><i class="bi bi-cart-check"></i> Confirmar</button>
+                                <button type="reset" class="btn btn-outline-secondary" onclick="limparFormulario()"><i class="bi bi-x-circle"></i> Limpar</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-7">
+                <div class="card shadow">
+                    <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0"><i class="bi bi-receipt"></i> Ingressos Vendidos</h5>
+                        <span class="badge bg-danger" id="contadorIngressos">0</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-striped table-hover">
+                                <thead class="table-dark">
+                                    <tr><th>Cliente</th><th>Filme</th><th>Assento</th><th>Pagamento</th><th>Valor</th><th>Acoes</th></tr>
+                                </thead>
+                                <tbody id="listaIngressos"></tbody>
+                            </table>
+                        </div>
+                        <div id="mensagemVazia" class="text-center text-muted py-4 hidden">
+                            <i class="bi bi-inbox display-4"></i>
+                            <p>Nenhum ingresso vendido.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modalIngresso" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header bg-success text-white">
+                    <h5 class="modal-title"><i class="bi bi-check-circle"></i> Venda Confirmada!</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Fechar"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="card ingresso-card">
+                        <div class="card-body">
+                            <h5 class="card-title text-center mb-3"><i class="bi bi-ticket-perforated"></i> INGRESSO</h5>
+                            <hr>
+                            <p><strong>Cliente:</strong> <span id="ticketCliente"></span></p>
+                            <p><strong>Filme:</strong> <span id="ticketFilme"></span></p>
+                            <p><strong>Sala:</strong> <span id="ticketSala"></span></p>
+                            <p><strong>Data/Hora:</strong> <span id="ticketDataHora"></span></p>
+                            <p><strong>Assento:</strong> <span id="ticketAssento"></span></p>
+                            <p><strong>Valor:</strong> <span id="ticketValor"></span></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success" data-bs-dismiss="modal"><i class="bi bi-check"></i> OK</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modalAlerta" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalTitulo">Alerta</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+                </div>
+                <div class="modal-body" id="modalMensagem"></div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">OK</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="bg-dark text-white text-center py-3 mt-5">
+        <p class="mb-0">2026 CineControl</p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/ingressos.js"></script>
+</body>
+</html>
