@@ -95,6 +95,79 @@
         </div>
     </div>
 
+    <!-- Modal Deletar -->
+    <div class="modal fade" id="modalDeletar" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow">
+                <div class="modal-header bg-danger text-white border-0">
+                    <h5 class="modal-title"><i class="bi bi-exclamation-triangle-fill me-2"></i>Confirmar Exclusão</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Fechar"></button>
+                </div>
+                <div class="modal-body text-center py-4">
+                    <div class="mb-3">
+                        <i class="bi bi-door-open text-danger delete-icon-large"></i>
+                    </div>
+                    <h5 class="mb-3">Deseja excluir esta sala?</h5>
+                    <div class="alert alert-light border" id="infoSalaDeletar">
+                        <p class="mb-1"><strong>Nome:</strong> <span id="deleteNome"></span></p>
+                        <p class="mb-1"><strong>Tipo:</strong> <span id="deleteTipo"></span></p>
+                        <p class="mb-0"><strong>Capacidade:</strong> <span id="deleteCapacidade"></span></p>
+                    </div>
+                    <p class="text-muted small">Esta ação não pode ser desfeita.</p>
+                </div>
+                <div class="modal-footer border-0 justify-content-center">
+                    <button type="button" class="btn btn-secondary px-4" data-bs-dismiss="modal">
+                        <i class="bi bi-x-lg me-1"></i>Cancelar
+                    </button>
+                    <button type="button" class="btn btn-danger px-4" id="btnConfirmarDelete">
+                        <i class="bi bi-trash me-1"></i>Sim, excluir
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Editar -->
+    <div class="modal fade" id="modalEditar" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow">
+                <div class="modal-header bg-success text-white border-0">
+                    <h5 class="modal-title"><i class="bi bi-pencil-square me-2"></i>Editar Sala</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Fechar"></button>
+                </div>
+                <div class="modal-body py-4">
+                    <form id="formEditar">
+                        <input type="hidden" id="editIndex">
+                        <div class="mb-3">
+                            <label for="editNomeSala" class="form-label"><i class="bi bi-door-open me-1"></i>Nome *</label>
+                            <input type="text" class="form-control" id="editNomeSala" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editCapacidade" class="form-label"><i class="bi bi-people me-1"></i>Capacidade *</label>
+                            <input type="number" class="form-control" id="editCapacidade" required min="1">
+                        </div>
+                        <div class="mb-3">
+                            <label for="editTipoSala" class="form-label"><i class="bi bi-display me-1"></i>Tipo *</label>
+                            <select class="form-select" id="editTipoSala" required>
+                                <option value="2D">2D</option>
+                                <option value="3D">3D</option>
+                                <option value="IMAX">IMAX</option>
+                            </select>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer border-0">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        <i class="bi bi-x-lg me-1"></i>Cancelar
+                    </button>
+                    <button type="button" class="btn btn-success" id="btnSalvarEdicao">
+                        <i class="bi bi-check-lg me-1"></i>Salvar Alterações
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <footer class="bg-dark text-white text-center py-3 mt-5">
         <p class="mb-0">2026 CineControl</p>
     </footer>

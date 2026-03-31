@@ -35,7 +35,12 @@ function carregarSalas() {
                         <p><i class="bi bi-people"></i> ${sala.capacidade} lugares</p>
                     </div>
                     <div class="card-footer bg-transparent text-center">
-                        <button class="btn btn-sm btn-outline-danger" onclick="excluirSala(${index})"><i class="bi bi-trash"></i> Excluir</button>
+                        <button class="btn btn-sm btn-outline-success me-1" onclick="abrirModalEditar(${index})" title="Editar">
+                            <i class="bi bi-pencil"></i>
+                        </button>
+                        <button class="btn btn-sm btn-outline-danger" onclick="abrirModalDeletar(${index})" title="Excluir">
+                            <i class="bi bi-trash"></i>
+                        </button>
                     </div>
                 </div>
             `;
@@ -60,13 +65,80 @@ document.getElementById('formSala').addEventListener('submit', function(e) {
     carregarSalas();
 });
 
-function excluirSala(index) {
-    if (confirm('Excluir esta sala?')) {
-        const salas = JSON.parse(localStorage.getItem('salas')) || [];
-        salas.splice(index, 1);
-        localStorage.setItem('salas', JSON.stringify(salas));
-        carregarSalas();
+let indexParaDeletar = null;
+let indexParaEditar = null;
+
+function abrirModalDeletar(index) {
+    const salas = JSON.parse(localStorage.getItem('salas')) || [];
+    const sala = salas[index];
+    
+    if (sala) {
+        indexParaDeletar = index;
+        document.getElementById('deleteNome').textContent = sala.nome;
+        document.getElementById('deleteTipo').textContent = sala.tipo;
+        document.getElementById('deleteCapacidade').textContent = sala.capacidade + ' lugares';
+        new bootstrap.Modal(document.getElementById('modalDeletar')).show();
     }
+}
+
+document.getElementById('btnConfirmarDelete').addEventListener('click', function() {
+    if (indexParaDeletar !== null) {
+        const salas = JSON.parse(localStorage.getItem('salas')) || [];
+        salas.splice(indexParaDeletar, 1);
+        localStorage.setItem('salas', JSON.stringify(salas));
+        indexParaDeletar = null;
+        bootstrap.Modal.getInstance(document.getElementById('modalDeletar')).hide();
+        carregarSalas();
+        mostrarSucesso('Sala excluída com sucesso!');
+    }
+});
+
+function abrirModalEditar(index) {
+    const salas = JSON.parse(localStorage.getItem('salas')) || [];
+    const sala = salas[index];
+    
+    if (sala) {
+        indexParaEditar = index;
+        document.getElementById('editIndex').value = index;
+        document.getElementById('editNomeSala').value = sala.nome;
+        document.getElementById('editCapacidade').value = sala.capacidade;
+        document.getElementById('editTipoSala').value = sala.tipo;
+        new bootstrap.Modal(document.getElementById('modalEditar')).show();
+    }
+}
+
+document.getElementById('btnSalvarEdicao').addEventListener('click', function() {
+    const index = parseInt(document.getElementById('editIndex').value);
+    const salas = JSON.parse(localStorage.getItem('salas')) || [];
+    
+    if (index >= 0 && index < salas.length) {
+        salas[index].nome = document.getElementById('editNomeSala').value.trim();
+        salas[index].capacidade = parseInt(document.getElementById('editCapacidade').value);
+        salas[index].tipo = document.getElementById('editTipoSala').value;
+        
+        localStorage.setItem('salas', JSON.stringify(salas));
+        bootstrap.Modal.getInstance(document.getElementById('modalEditar')).hide();
+        carregarSalas();
+        mostrarSucesso('Sala atualizada com sucesso!');
+    }
+});
+
+function mostrarSucesso(mensagem) {
+    const toast = document.createElement('div');
+    toast.className = 'position-fixed bottom-0 end-0 p-3';
+    toast.style.zIndex = '1100';
+    toast.innerHTML = `
+        <div class="toast show" role="alert">
+            <div class="toast-header bg-success text-white">
+                <i class="bi bi-check-circle me-2"></i>
+                <strong class="me-auto">Sucesso</strong>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast"></button>
+            </div>
+            <div class="toast-body">${mensagem}</div>
+        </div>
+    `;
+    document.body.appendChild(toast);
+    setTimeout(() => toast.remove(), 3000);
 }
 
 function mostrarAlerta(titulo, mensagem) {

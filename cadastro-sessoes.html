@@ -123,6 +123,95 @@
         </div>
     </div>
 
+    <!-- Modal Deletar -->
+    <div class="modal fade" id="modalDeletar" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow">
+                <div class="modal-header bg-danger text-white border-0">
+                    <h5 class="modal-title"><i class="bi bi-exclamation-triangle-fill me-2"></i>Confirmar Exclusão</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Fechar"></button>
+                </div>
+                <div class="modal-body text-center py-4">
+                    <div class="mb-3">
+                        <i class="bi bi-calendar-event text-danger delete-icon-large"></i>
+                    </div>
+                    <h5 class="mb-3">Deseja excluir esta sessão?</h5>
+                    <div class="alert alert-light border" id="infoSessaoDeletar">
+                        <p class="mb-1"><strong>Filme:</strong> <span id="deleteFilme"></span></p>
+                        <p class="mb-1"><strong>Sala:</strong> <span id="deleteSala"></span></p>
+                        <p class="mb-0"><strong>Data/Hora:</strong> <span id="deleteDataHora"></span></p>
+                    </div>
+                    <p class="text-muted small">Esta ação não pode ser desfeita.</p>
+                </div>
+                <div class="modal-footer border-0 justify-content-center">
+                    <button type="button" class="btn btn-secondary px-4" data-bs-dismiss="modal">
+                        <i class="bi bi-x-lg me-1"></i>Cancelar
+                    </button>
+                    <button type="button" class="btn btn-danger px-4" id="btnConfirmarDelete">
+                        <i class="bi bi-trash me-1"></i>Sim, excluir
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Editar -->
+    <div class="modal fade" id="modalEditar" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow">
+                <div class="modal-header bg-warning text-dark border-0">
+                    <h5 class="modal-title"><i class="bi bi-pencil-square me-2"></i>Editar Sessão</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+                </div>
+                <div class="modal-body py-4">
+                    <form id="formEditar">
+                        <input type="hidden" id="editIndex">
+                        <div class="mb-3">
+                            <label for="editFilme" class="form-label"><i class="bi bi-film me-1"></i>Filme *</label>
+                            <select class="form-select" id="editFilme" required></select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editSala" class="form-label"><i class="bi bi-door-open me-1"></i>Sala *</label>
+                            <select class="form-select" id="editSala" required></select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editDataHora" class="form-label"><i class="bi bi-calendar-event me-1"></i>Data e Hora *</label>
+                            <input type="datetime-local" class="form-control" id="editDataHora" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editPreco" class="form-label"><i class="bi bi-cash me-1"></i>Preço (R$) *</label>
+                            <input type="number" class="form-control" id="editPreco" required min="0" step="0.01">
+                        </div>
+                        <div class="row">
+                            <div class="col-6 mb-3">
+                                <label for="editIdioma" class="form-label"><i class="bi bi-translate me-1"></i>Idioma *</label>
+                                <select class="form-select" id="editIdioma" required>
+                                    <option value="Dublado">Dublado</option>
+                                    <option value="Legendado">Legendado</option>
+                                </select>
+                            </div>
+                            <div class="col-6 mb-3">
+                                <label for="editFormato" class="form-label"><i class="bi bi-display me-1"></i>Formato *</label>
+                                <select class="form-select" id="editFormato" required>
+                                    <option value="2D">2D</option>
+                                    <option value="3D">3D</option>
+                                </select>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer border-0">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        <i class="bi bi-x-lg me-1"></i>Cancelar
+                    </button>
+                    <button type="button" class="btn btn-warning" id="btnSalvarEdicao">
+                        <i class="bi bi-check-lg me-1"></i>Salvar Alterações
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <footer class="bg-dark text-white text-center py-3 mt-5">
         <p class="mb-0">2026 CineControl</p>
     </footer>

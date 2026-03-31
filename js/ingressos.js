@@ -89,7 +89,14 @@ function carregarIngressos() {
                 <td><span class="badge bg-primary">${ing.assento}</span></td>
                 <td><span class="badge bg-secondary">${ing.tipoPagamento}</span></td>
                 <td><span class="badge bg-success">R$ ${parseFloat(ing.valor).toFixed(2)}</span></td>
-                <td><button class="btn btn-sm btn-outline-danger" onclick="cancelarIngresso(${i})"><i class="bi bi-x-circle"></i></button></td>
+                <td>
+                    <button class="btn btn-sm btn-outline-primary me-1" onclick="abrirModalEditar(${i})" title="Editar">
+                        <i class="bi bi-pencil"></i>
+                    </button>
+                    <button class="btn btn-sm btn-outline-danger" onclick="abrirModalDeletar(${i})" title="Cancelar">
+                        <i class="bi bi-trash"></i>
+                    </button>
+                </td>
             `;
             lista.appendChild(tr);
         });
@@ -144,13 +151,102 @@ document.getElementById('formVenda').addEventListener('submit', function(e) {
     carregarIngressos();
 });
 
-function cancelarIngresso(index) {
-    if (confirm('Cancelar este ingresso?')) {
-        const ingressos = JSON.parse(localStorage.getItem('ingressos')) || [];
-        ingressos.splice(index, 1);
-        localStorage.setItem('ingressos', JSON.stringify(ingressos));
-        carregarIngressos();
+let indexParaDeletar = null;
+let indexParaEditar = null;
+
+function abrirModalDeletar(index) {
+    const ingressos = JSON.parse(localStorage.getItem('ingressos')) || [];
+    const ing = ingressos[index];
+    
+    if (ing) {
+        indexParaDeletar = index;
+        document.getElementById('deleteCliente').textContent = ing.nomeCliente;
+        document.getElementById('deleteFilme').textContent = ing.nomeFilme;
+        document.getElementById('deleteAssento').textContent = ing.assento;
+        new bootstrap.Modal(document.getElementById('modalDeletar')).show();
     }
+}
+
+document.getElementById('btnConfirmarDelete').addEventListener('click', function() {
+    if (indexParaDeletar !== null) {
+        const ingressos = JSON.parse(localStorage.getItem('ingressos')) || [];
+        ingressos.splice(indexParaDeletar, 1);
+        localStorage.setItem('ingressos', JSON.stringify(ingressos));
+        indexParaDeletar = null;
+        bootstrap.Modal.getInstance(document.getElementById('modalDeletar')).hide();
+        carregarIngressos();
+        mostrarSucesso('Ingresso cancelado com sucesso!');
+    }
+});
+
+function abrirModalEditar(index) {
+    const ingressos = JSON.parse(localStorage.getItem('ingressos')) || [];
+    const ing = ingressos[index];
+    
+    if (ing) {
+        indexParaEditar = index;
+        document.getElementById('editIndex').value = index;
+        document.getElementById('editNomeCliente').value = ing.nomeCliente;
+        document.getElementById('editCpf').value = ing.cpf;
+        document.getElementById('editAssento').value = ing.assento;
+        document.getElementById('editTipoPagamento').value = ing.tipoPagamento;
+        document.getElementById('editFilmeInfo').textContent = `${ing.nomeFilme} - ${formatarDataHora(ing.dataHora)}`;
+        new bootstrap.Modal(document.getElementById('modalEditar')).show();
+    }
+}
+
+document.getElementById('btnSalvarEdicao').addEventListener('click', function() {
+    const index = parseInt(document.getElementById('editIndex').value);
+    const ingressos = JSON.parse(localStorage.getItem('ingressos')) || [];
+    
+    if (index >= 0 && index < ingressos.length) {
+        const novoAssento = document.getElementById('editAssento').value.trim().toUpperCase();
+        const assentoAtual = ingressos[index].assento;
+        const sessaoId = ingressos[index].sessaoId;
+        
+        // Verifica se o novo assento já está ocupado (exceto o atual)
+        if (novoAssento !== assentoAtual && ingressos.some(i => i.sessaoId == sessaoId && i.assento == novoAssento)) {
+            mostrarAlerta('Atenção!', 'Este assento já está ocupado nesta sessão!');
+            return;
+        }
+        
+        ingressos[index].nomeCliente = document.getElementById('editNomeCliente').value.trim();
+        ingressos[index].cpf = document.getElementById('editCpf').value.trim();
+        ingressos[index].assento = novoAssento;
+        ingressos[index].tipoPagamento = document.getElementById('editTipoPagamento').value;
+        
+        localStorage.setItem('ingressos', JSON.stringify(ingressos));
+        bootstrap.Modal.getInstance(document.getElementById('modalEditar')).hide();
+        carregarIngressos();
+        mostrarSucesso('Ingresso atualizado com sucesso!');
+    }
+});
+
+// Máscara de CPF para o modal de edição
+document.getElementById('editCpf').addEventListener('input', function(e) {
+    let v = e.target.value.replace(/\D/g, '').slice(0, 11);
+    if (v.length > 9) v = v.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4');
+    else if (v.length > 6) v = v.replace(/(\d{3})(\d{3})(\d{3})/, '$1.$2.$3');
+    else if (v.length > 3) v = v.replace(/(\d{3})(\d{3})/, '$1.$2');
+    e.target.value = v;
+});
+
+function mostrarSucesso(mensagem) {
+    const toast = document.createElement('div');
+    toast.className = 'position-fixed bottom-0 end-0 p-3';
+    toast.style.zIndex = '1100';
+    toast.innerHTML = `
+        <div class="toast show" role="alert">
+            <div class="toast-header bg-success text-white">
+                <i class="bi bi-check-circle me-2"></i>
+                <strong class="me-auto">Sucesso</strong>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast"></button>
+            </div>
+            <div class="toast-body">${mensagem}</div>
+        </div>
+    `;
+    document.body.appendChild(toast);
+    setTimeout(() => toast.remove(), 3000);
 }
 
 function mostrarAlerta(titulo, mensagem) {

@@ -144,6 +144,95 @@
         </div>
     </div>
 
+    <!-- Modal Deletar -->
+    <div class="modal fade" id="modalDeletar" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow">
+                <div class="modal-header bg-danger text-white border-0">
+                    <h5 class="modal-title"><i class="bi bi-exclamation-triangle-fill me-2"></i>Confirmar Cancelamento</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Fechar"></button>
+                </div>
+                <div class="modal-body text-center py-4">
+                    <div class="mb-3">
+                        <i class="bi bi-ticket-perforated text-danger delete-icon-large"></i>
+                    </div>
+                    <h5 class="mb-3">Deseja cancelar este ingresso?</h5>
+                    <div class="alert alert-light border" id="infoIngressoDeletar">
+                        <p class="mb-1"><strong>Cliente:</strong> <span id="deleteCliente"></span></p>
+                        <p class="mb-1"><strong>Filme:</strong> <span id="deleteFilme"></span></p>
+                        <p class="mb-0"><strong>Assento:</strong> <span id="deleteAssento"></span></p>
+                    </div>
+                    <p class="text-muted small">Esta ação não pode ser desfeita.</p>
+                </div>
+                <div class="modal-footer border-0 justify-content-center">
+                    <button type="button" class="btn btn-secondary px-4" data-bs-dismiss="modal">
+                        <i class="bi bi-x-lg me-1"></i>Não, manter
+                    </button>
+                    <button type="button" class="btn btn-danger px-4" id="btnConfirmarDelete">
+                        <i class="bi bi-trash me-1"></i>Sim, cancelar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Editar -->
+    <div class="modal fade" id="modalEditar" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow">
+                <div class="modal-header bg-primary text-white border-0">
+                    <h5 class="modal-title"><i class="bi bi-pencil-square me-2"></i>Editar Ingresso</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Fechar"></button>
+                </div>
+                <div class="modal-body py-4">
+                    <form id="formEditar">
+                        <input type="hidden" id="editIndex">
+                        <div class="mb-3">
+                            <label for="editNomeCliente" class="form-label">
+                                <i class="bi bi-person me-1"></i>Nome do Cliente *
+                            </label>
+                            <input type="text" class="form-control" id="editNomeCliente" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editCpf" class="form-label">
+                                <i class="bi bi-card-text me-1"></i>CPF *
+                            </label>
+                            <input type="text" class="form-control" id="editCpf" required maxlength="14">
+                        </div>
+                        <div class="mb-3">
+                            <label for="editAssento" class="form-label">
+                                <i class="bi bi-grid-3x3 me-1"></i>Assento *
+                            </label>
+                            <input type="text" class="form-control" id="editAssento" required placeholder="Ex: A10">
+                        </div>
+                        <div class="mb-3">
+                            <label for="editTipoPagamento" class="form-label">
+                                <i class="bi bi-credit-card me-1"></i>Forma de Pagamento *
+                            </label>
+                            <select class="form-select" id="editTipoPagamento" required>
+                                <option value="Cartao">Cartão</option>
+                                <option value="Pix">Pix</option>
+                                <option value="Dinheiro">Dinheiro</option>
+                            </select>
+                        </div>
+                        <div class="alert alert-info small">
+                            <i class="bi bi-info-circle me-1"></i>
+                            <strong>Filme:</strong> <span id="editFilmeInfo"></span>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer border-0">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        <i class="bi bi-x-lg me-1"></i>Cancelar
+                    </button>
+                    <button type="button" class="btn btn-primary" id="btnSalvarEdicao">
+                        <i class="bi bi-check-lg me-1"></i>Salvar Alterações
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <footer class="bg-dark text-white text-center py-3 mt-5">
         <p class="mb-0">2026 CineControl</p>
     </footer>
